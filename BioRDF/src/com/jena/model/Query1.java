@@ -21,31 +21,32 @@ public class Query1 {
 	public static void main(String args[]) {
 
 		String acces;
-		String directory = "C:/Users/lalou/workspace/BioRDF/fin_model";
+		String directory = "C:/Users/angeliki/Desktop/workspace/BioRDF/fin_model";
 		Dataset ds = TDBFactory.createDataset(directory);
 		Model model = ds.getDefaultModel();// we load the dataset into an empty
 		// model
 
 		try {
 			long start = System.currentTimeMillis();
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 10; i++) {
 				long start2 = System.currentTimeMillis();
 				// we make the query and specify the model in which it is made
 				QueryExecution qExec = QueryExecutionFactory.create(
 						"PREFIX ns:<http://www.protein_interactions.com/> "
 								+ "SELECT ?proteins "
 								+ "WHERE { ?proteins ns:Accession ?Accession }"
-								+ "ORDER BY RAND() LIMIT 1000", model);
+								+ "ORDER BY RAND() LIMIT 100", model);
 				ResultSet rs = qExec.execSelect();
-				System.out.println("-------------------------" + i);
-				//System.out.println("Q1 "+ (System.currentTimeMillis() - start2) + "ms");
+				// System.out.println("-------------------------" + i);
+				// System.out.println("Q1 "+ (System.currentTimeMillis() -
+				// start2) + "ms");
 				while (rs.hasNext()) {
 					try {
 						start2 = System.currentTimeMillis();
-						QuerySolution accession = rs.next();
-						System.out.print("Q1 iteration"
-								+ (System.currentTimeMillis() - start2)
-								+ "ms  ");
+						QuerySolution accession = rs.nextSolution();
+						// System.out.print("Q1 iteration"
+						// + (System.currentTimeMillis() - start2)
+						// + "ms  ");
 
 						Resource thing = accession.getResource("proteins");
 						acces = thing.toString();
@@ -57,8 +58,6 @@ public class Query1 {
 								+ "SELECT ?protein ?protein2 ?thing ?type ?pub "
 								+ "WHERE {"
 								+ "?s  ns:PubIdentifier  ?pub"
-								+ "."
-								+ "?s ns:interacts ?protein"
 								+ "."
 								+ "?s ns:Interaction_type ?type"
 								+ "."
@@ -87,7 +86,8 @@ public class Query1 {
 						// model);
 						start2 = System.currentTimeMillis();
 						ResultSet rs2 = exec.execSelect();
-						//System.out.println("Q2"	+ (System.currentTimeMillis() - start2) + "ms");
+						// System.out.println("Q2" + (System.currentTimeMillis()
+						// - start2) + "ms");
 						// while(rs2.hasNext()){
 						// ResultSetFormatter.out(rs2);
 						// System.out.println(rs2);
@@ -95,14 +95,15 @@ public class Query1 {
 						// }
 						exec.close();
 					} catch (Exception e) {
-							System.out.println("ERROR");
+						System.out.println("ERROR");
 					}
 				}// while
 				qExec.close();
-				//System.out.println((System.currentTimeMillis() - start2) + "ms");
+				// System.out.println((System.currentTimeMillis() - start2) +
+				// "ms");
 			}// for
 
-			long elapsedTimeMillis = (System.currentTimeMillis() - start) / 5;
+			long elapsedTimeMillis = (System.currentTimeMillis() - start) / 10;
 			System.out.println(elapsedTimeMillis + "ms");
 		}
 
