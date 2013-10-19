@@ -23,6 +23,7 @@
  */
 
 package com.org.knowceans.util;
+import org.apache.commons.math3.linear.RealMatrix;
 
 import java.lang.reflect.Array;
 import java.util.Vector;
@@ -73,6 +74,26 @@ public class Vectors {
 		Vectors.ndigits = 0;
 	}
 
+	
+	public static double computeCorrelation(int i, int j, double[][] data) {
+		 double x=0, y=0, xx=0, yy=0, xy=0, n=0;
+		 n = data.length;
+		 for(int row=0; row < data.length; row++) {
+		  x += data[row][i];
+		  y += data[row][j];
+		  xx += Math.pow(data[row][i], 2.0d);
+		  yy += Math.pow(data[row][j], 2.0d);
+		  xy += data[row][i] * data[row][j];
+		 }
+		 double numerator = xy - ((x * y) / n);
+		 double denominator1 = xx - (Math.pow(x, 2.0d) / n);
+		 double denominator2 = yy - (Math.pow(y, 2.0d) / n);
+		 double denominator = Math.sqrt(xx * yy);
+		 double corr = numerator / denominator;
+		 return corr;
+		}
+	
+	
 	/**
 	 * @param start
 	 * @param end
@@ -88,6 +109,302 @@ public class Vectors {
 		return out;
 	}
 
+	// get eye matrix according to given dimension
+
+	public static double[][] eye(int x, int y) {
+		double[][] matrix = new double[x][y];
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+
+				if (i == j) {
+					matrix[i][j] = 1;
+				} else
+					matrix[i][j] = 0;
+			}
+
+		}
+		return matrix;
+
+	}
+
+	// get eye matrix according to given dimension
+	public static int[][] inteye(int x, int y) {
+		int[][] matrix = new int[x][y];
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
+
+				if (i == j) {
+					matrix[i][j] = 1;
+				} else
+					matrix[i][j] = 0;
+			}
+
+		}
+		return matrix;
+
+	}
+
+	// check whether each element in matrix is greater than scalar
+	public static boolean check(double[][] a, int scalar) {
+		int k = 0;
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < a[1].length; j++) {
+				if (a[i][j] > scalar)
+					k++;
+			}
+
+		}
+		if (k == (a[0].length * a[1].length))
+			return true;
+
+		else
+			return false;
+
+	}
+	
+	// check whether each element in matrix is greater than scalar
+		public static boolean check(double[][] a, double scalar) {
+			int k = 0;
+			for (int i = 0; i < a[0].length; i++) {
+				for (int j = 0; j < a[1].length; j++) {
+					if (a[i][j] > scalar)
+						k++;
+				}
+
+			}
+			if (k == (a[0].length * a[1].length))
+				return true;
+
+			else
+				return false;
+
+		}
+	
+	
+	
+	// check whether each element in vector is greater than scalar
+		public static boolean check(int[] a, double scalar) {
+			int k = 0;
+			for (int i = 0; i < a.length; i++) {
+				
+					if (a[i] > scalar)
+						k++;
+				
+
+			}
+			if (k == (a.length))
+				return true;
+
+			else
+				return false;
+
+		}
+	
+		// check whether each element in vector is greater than scalar
+				public static double[] check(double[] a, double scalar) {
+					//int k = 0;
+					double[] vector=new double[a.length];
+					for (int i = 0; i < a.length; i++) {
+						
+							if (a[i] > scalar){
+								vector[i]=1.0;
+							}else vector[i]=0.0;
+
+					}
+					
+					return vector;
+
+				}
+		
+				
+				public static double[][] checkmat(double[][] a, double scalar) {
+					//int k = 0;
+					double[][] matrix=new double[a[0].length][a[1].length];
+					for (int i = 0; i < a[0].length; i++) {
+						for(int j=0; j<a[1].length; j++)
+							if (a[i][j] > scalar){
+								matrix[i][j]=1.0;
+							}else matrix[i][j]=0.0;
+
+					}
+					
+					return matrix;
+
+				}
+				
+	
+
+	// check whether each element in matrix is equal to scalar
+	public static boolean checkeq(int[][] a, int scalar) {
+		int k = 0;
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < a[1].length; j++) {
+				if (a[i][j] == scalar)
+					k++;
+			}
+
+		}
+		if (k == (a[0].length * a[1].length))
+			return true;
+
+		else
+			return false;
+
+	}
+	
+	// check whether each element in matrix is equal to scalar
+		public static boolean checkeq(double[][] a, int scalar) {
+			int k = 0;
+			for (int i = 0; i < a[0].length; i++) {
+				for (int j = 0; j < a[1].length; j++) {
+					if (a[i][j] == scalar)
+						k++;
+				}
+
+			}
+			if (k == (a[0].length * a[1].length))
+				return true;
+
+			else
+				return false;
+
+		}
+	
+	
+	
+	
+	
+	// check whether a matrix is greater than another matrix
+		public static boolean check(int[][] a, int[][] b ) {
+			if(((a[0].length)!=b[0].length)&&((a[1].length)!=b[1].length)){
+				System.out.print("Matrix dimensions do not agree!");
+				
+			}
+			
+			int k = 0;
+			for (int i = 0; i < a[0].length; i++) {
+				for (int j = 0; j < a[1].length; j++) {
+					if (a[i][j] > b[i][j])
+						k++;
+				}
+
+			}
+			if (k == (a[0].length * a[1].length))
+				return true;
+
+			else
+				return false;
+
+		}
+		
+		// check whether a matrix is greater than another matrix
+		/*public static double[] checkel(double[] a, double[] b ) {
+						if((a.length)!=b.length){
+							System.out.print("Matrix dimensions do not agree!");
+							
+						}
+						double [] vector=new double[a.length];
+						
+						
+						for (int i = 0; i < a.length; i++) {
+							if (a[i] > b[i]){
+									vector[i]=1.0;
+							}
+								else vector[i]=0.0;
+							
+							}
+
+						
+						return vector;
+
+					}
+		*/
+	
+// check whether a matrix is greater than another matrix
+	public static double[][] check(double[][] a, double[][] b ) {
+					if(((a[0].length)!=b[0].length)&&((a[1].length)!=b[1].length)){
+						System.out.print("Matrix dimensions do not agree!");
+						
+					}
+					double [][] matrix=new double[a[0].length][a[1].length];
+					
+					
+					for (int i = 0; i < a[0].length; i++) {
+						for (int j = 0; j < a[1].length; j++) {
+							if (a[i][j] > b[i][j]){
+								matrix[i][j]=1.0;
+						}
+							else matrix[i][j]=0.0;
+						
+						}
+
+					}
+					return matrix;
+
+				}
+			
+		
+	
+	
+	
+
+	// calculate the maximum between two matrices
+	// the resulting matrix has the maximum elements from either source matrix
+	public static double[][] maxarray(double[][] x, double[][] y) {
+		int m = x[0].length;
+		int n = y[0].length;
+		double[][] matrix = new double[m][n];
+
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+
+				if (x[i][j] > y[i][j]) {
+
+					matrix[i][j] = x[i][j];
+
+				} else
+					matrix[i][j] = y[i][j];
+
+			}
+
+		}
+		return matrix;
+
+	}
+
+	/**
+	 * a =1./a
+	 * 
+	 * @param a
+	 * @param scalar
+	 * @return
+	 */
+	public static double[] dotdiv(double[] a) {
+		double[] matrix = new double[a.length];
+		for (int i = 0; i < a.length; i++) {
+
+			matrix[i] = 1.0 / a[i];
+		}
+		return matrix;
+	}
+	
+	/**
+	 * a =1./a
+	 * 
+	 * @param a
+	 * @param scalar
+	 * @return
+	 */
+	public static int[] dotdiv(int[] a) {
+		int[] matrix = new int[a.length];
+		for (int i = 0; i < a.length; i++) {
+
+			matrix[i] = 1 / a[i];
+		}
+		return matrix;
+	}
+
+
 	/**
 	 * @param start
 	 * @param end
@@ -101,9 +418,12 @@ public class Vectors {
 	 * create sequence [start : step : end] of double values. TODO: check
 	 * precision.
 	 * 
-	 * @param start double value of start, if integer, use "1.0" notation.
-	 * @param end double value of end, if integer, use "1.0" notation.
-	 * @param step double value of step size
+	 * @param start
+	 *            double value of start, if integer, use "1.0" notation.
+	 * @param end
+	 *            double value of end, if integer, use "1.0" notation.
+	 * @param step
+	 *            double value of step size
 	 * @return
 	 */
 	public static double[] range(double start, double end, double step) {
@@ -125,20 +445,7 @@ public class Vectors {
 		return range(start, end, end - start > 0 ? 1 : -1);
 	}
 
-	/**
-	 * sum the elements of vec
-	 * 
-	 * @param vec
-	 * @return
-	 */
-	public static double sum(double[] vec) {
-		double sum = 0;
-		for (int i = 0; i < vec.length; i++) {
-			sum += vec[i];
-		}
-		return sum;
 
-	}
 
 	/**
 	 * product of the values in vec
@@ -183,6 +490,23 @@ public class Vectors {
 		return sum;
 	}
 
+	
+	/**
+	 * sum the elements of vec
+	 * 
+	 * @param vec
+	 * @return
+	 */
+	public static double sum(double[] vec) {
+		double sum = 0;
+		for (int i = 0; i < vec.length; i++) {
+			sum += vec[i];
+		}
+		return sum;
+
+	}
+	
+	
 	/**
 	 * cumulative sum of the elements, starting at element 0.
 	 * 
@@ -233,6 +557,55 @@ public class Vectors {
 			sums[i] = sum(x[i]);
 		}
 		return sums;
+	}
+
+	/**
+	 * calculate the sums of the columns
+	 * 
+	 * @param x
+	 * @return
+	 */
+	public static double[] colsums(double[][] x) {
+		double[] sums = new double[x[1].length];
+		for (int i = 0; i < x[1].length; i++) {
+
+			sums[i] = sum(x[i]);
+
+		}
+		return sums;
+	}
+
+	/**
+	 * calculate the sums of the columns
+	 * 
+	 * @param x
+	 * @return
+	 */
+	public static int[] colsums(int[][] x) {
+		int[] sums = new int[x[1].length];
+		for (int i = 0; i < x[1].length; i++) {
+
+			sums[i] = sum(x[i]);
+
+		}
+		return sums;
+	}
+	
+	
+	
+	// calculate the mean value of vector
+	public static double mean(double[][] x) {
+		double[] vec = colsums(x);
+		double vec2 = 0;
+		for (int i = 0; i < vec.length; i++) {
+
+			vec2 += vec[i];
+
+		}
+		vec2 = vec2 / vec.length;// ypologizoume to mean value tou dianysmatos
+
+		return vec2;
+
 	}
 
 	/**
@@ -440,7 +813,8 @@ public class Vectors {
 	/**
 	 * @param x
 	 * @param y
-	 * @param rowwise ? [x; y] : [x, y]
+	 * @param rowwise
+	 *            ? [x; y] : [x, y]
 	 * @return [x {;,} y]
 	 */
 	public static double[][] concat(double[][] x, double[] y, boolean rowwise) {
@@ -469,7 +843,8 @@ public class Vectors {
 	/**
 	 * @param x
 	 * @param y
-	 * @param rowwise ? [x; y] : [x, y]
+	 * @param rowwise
+	 *            ? [x; y] : [x, y]
 	 * @return [x {;,} y]
 	 */
 	public static double[][] concat(double[][] x, double[][] y, boolean rowwise) {
@@ -496,7 +871,8 @@ public class Vectors {
 	/**
 	 * @param x
 	 * @param y
-	 * @param rowwise ? [x; y] : [x, y]
+	 * @param rowwise
+	 *            ? [x; y] : [x, y]
 	 * @return [x {;,} y]
 	 */
 	public static int[][] concat(int[][] x, int[][] y, boolean rowwise) {
@@ -578,8 +954,10 @@ public class Vectors {
 	/**
 	 * Create new vector of larger size and data of the argument.
 	 * 
-	 * @param vector source array
-	 * @param moreelements number of elements to add
+	 * @param vector
+	 *            source array
+	 * @param moreelements
+	 *            number of elements to add
 	 * @return larger vector
 	 */
 	public static double[] increaseSize(final double[] vector, int moreelements) {
@@ -592,8 +970,10 @@ public class Vectors {
 	 * Create new matrix of larger size and data of the argument.
 	 * 
 	 * @param matrix
-	 * @param more rows
-	 * @param more cols
+	 * @param more
+	 *            rows
+	 * @param more
+	 *            cols
 	 * @return larger matrix
 	 */
 	public static double[][] increaseSize(final double[][] matrix,
@@ -630,8 +1010,10 @@ public class Vectors {
 	 * Create new matrix with data of the argument and removed rows and columns.
 	 * 
 	 * @param matrix
-	 * @param rows ordered vector of rows to remove
-	 * @param cols ordered vector of cols to remove
+	 * @param rows
+	 *            ordered vector of rows to remove
+	 * @param cols
+	 *            ordered vector of cols to remove
 	 * @return smaller matrix
 	 */
 	public static double[][] removeElements(final double[][] matrix,
@@ -644,7 +1026,8 @@ public class Vectors {
 	 * Create new vector with data of the argument and removed elements.
 	 * 
 	 * @param vector
-	 * @param elements ordered elements to remove
+	 * @param elements
+	 *            ordered elements to remove
 	 * @return smaller vector
 	 */
 	public static double[] removeElements(final double[] vector, int[] elements) {
@@ -655,8 +1038,10 @@ public class Vectors {
 	 * return the complement of the sorted subset of the set 0:length-1 in
 	 * Matlab notation
 	 * 
-	 * @param set sorted set of elements < length
-	 * @param length of superset of set and its returned complement
+	 * @param set
+	 *            sorted set of elements < length
+	 * @param length
+	 *            of superset of set and its returned complement
 	 * @return
 	 */
 	public static int[] rangeComplement(int[] set, int length) {
@@ -735,7 +1120,8 @@ public class Vectors {
 	 * Java)
 	 * 
 	 * @param matrix
-	 * @param col column number to choose (must exist in each row of the matrix)
+	 * @param col
+	 *            column number to choose (must exist in each row of the matrix)
 	 * @return
 	 */
 	public static double[] chooseColumn(double[][] matrix, int col) {
@@ -749,8 +1135,10 @@ public class Vectors {
 	/**
 	 * Create new vector of larger size and data of the argument.
 	 * 
-	 * @param vector source array
-	 * @param moreelements number of elements to add
+	 * @param vector
+	 *            source array
+	 * @param moreelements
+	 *            number of elements to add
 	 * @return larger vector
 	 */
 	public static int[] increaseSize(final int[] vector, int moreelements) {
@@ -763,8 +1151,10 @@ public class Vectors {
 	 * Create new matrix of larger size and data of the argument.
 	 * 
 	 * @param matrix
-	 * @param more rows
-	 * @param more cols
+	 * @param more
+	 *            rows
+	 * @param more
+	 *            cols
 	 * @return larger matrix
 	 */
 	public static int[][] increaseSize(final int[][] matrix, int morerows,
@@ -801,8 +1191,10 @@ public class Vectors {
 	 * Create new matrix with data of the argument and removed rows and columns.
 	 * 
 	 * @param matrix
-	 * @param rows ordered vector of rows to remove
-	 * @param cols ordered vector of cols to remove
+	 * @param rows
+	 *            ordered vector of rows to remove
+	 * @param cols
+	 *            ordered vector of cols to remove
 	 * @return smaller matrix
 	 */
 	public static int[][] removeElements(final int[][] matrix, int[] rows,
@@ -815,7 +1207,8 @@ public class Vectors {
 	 * Create new vector with data of the argument and removed elements.
 	 * 
 	 * @param vector
-	 * @param elements ordered elements to remove
+	 * @param elements
+	 *            ordered elements to remove
 	 * @return smaller vector
 	 */
 	public static int[] removeElements(final int[] vector, int[] elements) {
@@ -1067,7 +1460,7 @@ public class Vectors {
 	/**
 	 * @param len
 	 * @param factor
-	 * @return factor * ones(1, len);
+	 * @return factor * ones(len, 1);
 	 */
 	public static double[] ones(int len, double factor) {
 		double[] x = new double[len];
@@ -1080,7 +1473,7 @@ public class Vectors {
 	/**
 	 * @param len
 	 * @param factor
-	 * @return factor * ones(1, len);
+	 * @return factor * ones(len, 1);
 	 */
 	public static int[] ones(int len, int factor) {
 		int[] x = new int[len];
@@ -1090,6 +1483,18 @@ public class Vectors {
 		return x;
 	}
 
+	
+	//pinakas gematos me factor //tetragwnikos
+	public static double[][] fill(int len, int factor) {
+		double[][] x = new double[len][len];
+		for (int i = 0; i < x[0].length; i++) {
+			for(int j=0; j<x[1].length; j++){
+			x[i][j] = factor;
+		}}
+		return x;
+	}
+	
+	
 	/**
 	 * @param len
 	 * @return zeros(1, len)
@@ -1100,12 +1505,32 @@ public class Vectors {
 
 	/**
 	 * @param len
+	 * @return zeros(len1, len2)
+	 */
+	public static double[][] zerosd(int len1, int len2) {
+		return new double[len1][len2];
+	}
+
+	
+	
+	/**
+	 * @param len
 	 * @return ones(1, len)
 	 */
 	public static int[] ones(int len) {
 		return ones(len, 1);
 	}
 
+	public static double[] ones2(int len){
+		//double a[]=new double[len];
+		//for (int i=0; i<len; i++){
+			//a[i]=1.0;
+			
+		//}
+		return ones(len,1.0);
+}
+	
+	
 	/**
 	 * cast a double[] to an int[]
 	 * 
@@ -1295,6 +1720,25 @@ public class Vectors {
 		}
 	}
 
+	//add matrices
+	
+	public static double[][] add(double[][] a, double[][]b){
+		if ((a[0].length != b[0].length) && (a[1].length != b[1].length))
+			throw new IllegalArgumentException("Vector dimensions must agree.");
+		double [][]matrix=new double [a[0].length][a[1].length];
+		
+		for(int i=0; i<a[0].length; i++){
+			for(int j=0; j<a[1].length; j++){
+				matrix[i][j]=a[i][j]+b[i][j];
+				
+			}
+			
+			
+		}
+		
+		return matrix;
+		
+	}
 	/**
 	 * add a scalar to the vector
 	 * 
@@ -1391,6 +1835,106 @@ public class Vectors {
 		}
 	}
 
+	public static void minus(int[] vec, int scalar) {
+		for (int i = 0; i < vec.length; i++) {
+			vec[i] -= scalar;
+		}
+
+	}
+
+	// subtract scalar from vector
+	/**
+	 * 
+	 * 
+	 * @param vec
+	 * @param scalar
+	 */
+	public static int[] intminus(int[] mat, int scalar) {
+		int j = 0;
+		int[] matrix = new int[mat.length];
+		for (int i = 0; i < mat.length; i++) {
+			matrix[i] = mat[i] - scalar;
+		}
+		return matrix;
+	}
+	
+	
+	//subtract scalar from vector
+	
+	
+	public static double[] dbminus(double[] mat, double scalar) {
+		int j = 0;
+		double[] matrix = new double[mat.length];
+		for (int i = 0; i < mat.length; i++) {
+			matrix[i] = mat[i] - scalar;
+		}
+		return matrix;
+	}
+	
+	
+	
+	//subtract matrix from scalar
+	public static double[][] dminus(double[][] mat, int scalar) {
+		
+		double[][] matrix = new double[mat[0].length][mat[1].length];
+		for (int i = 0; i < mat[0].length; i++) {
+			for (int j = 0; j< mat[1].length; j++){	
+		
+			matrix[i][j] = scalar-mat[i][j] ;
+			}}
+		return matrix;
+	}
+	
+	
+
+	public static int[][] matrixminus(int[][] a, int[][] b) {
+		int[][] matrix = new int[a[0].length][b[1].length];
+		if (((a[0].length) != b[0].length) && ((a[1].length) != b[1].length)) {
+			System.out.print("Dimensions do not agree!");
+		}
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < a[1].length; j++) {
+				matrix[i][j] = a[i][j] - b[i][j];
+
+			}
+
+		}
+		return matrix;
+	}
+
+	public static double[][] matrixminus(double[][] a, int[][] b) {
+		double[][] matrix = new double[a[0].length][b[1].length];
+		if (((a[0].length) != b[0].length) && ((a[1].length) != b[1].length)) {
+			System.out.print("Dimensions do not agree!");
+		}
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < a[1].length; j++) {
+				matrix[i][j] = a[i][j] - b[i][j];
+
+			}
+
+		}
+		return matrix;
+	}
+
+	
+	public static double[][] matrixminus(double[][] a, double[][] b) {
+		double[][] matrix = new double[a[0].length][b[1].length];
+		if (((a[0].length) != b[0].length) && ((a[1].length) != b[1].length)) {
+			System.out.print("Dimensions do not agree!");
+		}
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < a[1].length; j++) {
+				matrix[i][j] = a[i][j] - b[i][j];
+
+			}
+
+		}
+		return matrix;
+	}
+	
+	
+	
 	/**
 	 * squared euclidean distance between vectors.
 	 * 
@@ -1583,6 +2127,58 @@ public class Vectors {
 		}
 	}
 
+	// multiply matrix with scalar
+	public static int[][] multisc(int[][] a, double scalar) {
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < a[1].length; j++) {
+				a[i][j] *= scalar;
+			}
+		}
+		return a;
+	}
+	
+	
+	
+	
+	
+
+	// multiply matrix with scalar
+		public static int[][] multisc(int[][] a, int scalar) {
+			for (int i = 0; i < a[0].length; i++) {
+				for (int j = 0; j < a[1].length; j++) {
+					a[i][j] *= scalar;
+				}
+			}
+			return a;
+		}
+	
+		
+		// multiply matrix with scalar
+		public static double[][] multisc2(int[][] a, double scalar) {
+			double[][] matrix= new double [a[0].length][a[1].length];
+			for (int i = 0; i < a[0].length; i++) {
+				for (int j = 0; j < a[1].length; j++) {
+					matrix[i][j]=a[i][j] * scalar;
+				}
+			}
+			return matrix;
+		}
+		
+		
+		// multiply matrix with scalar
+				public static double[][] multisc2(double[][] a, double scalar) {
+					double[][] matrix= new double [a[0].length][a[1].length];
+					for (int i = 0; i < a[0].length; i++) {
+						for (int j = 0; j < a[1].length; j++) {
+							matrix[i][j]=a[i][j] * scalar;
+						}
+					}
+					return matrix;
+				}
+				
+		
+		
+	
 	/**
 	 * a *= b
 	 * 
@@ -1596,8 +2192,8 @@ public class Vectors {
 	}
 
 	/**
-	 * multiplicates the vector with a vector (inner product). The argument is
-	 * not modified.
+	 * /** multiplicates the vector with a vector (inner product). The argument
+	 * is not modified.
 	 * 
 	 * @param ds
 	 * @param d
@@ -1612,6 +2208,157 @@ public class Vectors {
 		}
 		return s;
 	}
+
+	/*
+	 * 
+	 * vector inner product *
+	 */
+	public static int intdotmult(int[] a, int[] b) {
+		if (a.length != b.length)
+			throw new IllegalArgumentException("Vector dimensions must agree.");
+		int s = 0;
+		for (int i = 0; i < a.length; i++) {
+			s += a[i] * b[i];
+		}
+		return s;
+
+	}
+	
+	//kanoume ginomeno diaysma me dianysma san outer product
+	public static double[][] outmult(double[] ds, double[] dt) {
+		//if (ds.length != dt.length)
+			//throw new IllegalArgumentException("Vector dimensions must agree.");
+		double [][] s=new double[ds.length][ds.length];
+		for (int i = 0; i < ds.length; i++) {
+			for(int j=0; j<dt.length; j++){
+			s[i][j] += ds[i] * dt[j];
+		}
+			
+		}	
+		return s;
+	}
+		
+	
+	
+
+	// 2d matrix multiplication
+
+	public static double[][] matrixmult(double[][] a, double[][] b) {
+		double[][] matrix = new double[a[0].length][b[1].length];
+		// for (int i = 0; i < a[0].length; i++) {
+		// int i=0;
+		// int k=0;
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < b[1].length; j++) {
+				for (int k = 0; k < a[1].length; k++) {
+					matrix[i][j] += a[i][k] * b[k][j];
+
+				}
+			}
+		}
+		return matrix;
+	}
+
+	// 2d matrix multiplication
+
+	public static int[][] matrixmult(int[][] a, int[][] b) {
+		int[][] matrix = new int[a[0].length][b[1].length];
+		// for (int i = 0; i < a[0].length; i++) {
+		// int i=0;
+		// int k=0;
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < b[1].length; j++) {
+				for (int k = 0; k < a[1].length; k++) {
+					matrix[i][j] += a[i][k] * b[k][j];
+
+				}
+			}
+		}
+		return matrix;
+	}
+	
+	public static double[][] matrixmult2(int[][] a, double[][] b) {
+		double[][] matrix = new double[a[0].length][b[1].length];
+		for (int k = 0; k < b[0].length; k++) {
+		for (int w=0; w<b[1].length; w++){
+			b[k][w]*=1.0;
+			
+		}
+		
+		
+		}
+		
+		for (int i = 0; i < a[0].length; i++) {
+			for (int j = 0; j < b[1].length; j++) {
+				for (int k = 0; k < a[1].length; k++) {
+					matrix[i][j] += a[i][k] * b[k][j];
+
+				}
+			}
+		}
+		return matrix;
+	}
+	
+	
+	
+	
+	//2d matrix multiplication per element
+	
+	public static int[][] elemult(int[][] a, int[][] b){
+		int [][] matrix=new int[a[0].length][a[1].length];
+		if(((a[0].length)!=b[0].length)&&((a[1].length)!=b[1].length)) System.out.print("Matrix dimensions do not agree!");
+		for(int i=0; i<a[0].length; i++){
+			for(int j=0; j<a[1].length; j++){
+				matrix[i][j]=a[i][j]*b[i][j];
+			}
+			
+			
+		}
+		return matrix;
+		
+		
+	}
+	
+	
+	//2d matrix multiplication per element
+	
+		public static double[][] elemult(double[][] a, double[][] b){
+			double [][] matrix=new double[a[0].length][a[1].length];
+			if(((a[0].length)!=b[0].length)&&((a[1].length)!=b[1].length)) System.out.print("Matrix dimensions do not agree!");
+			for(int i=0; i<a[0].length; i++){
+				for(int j=0; j<a[1].length; j++){
+					matrix[i][j]=a[i][j]*b[i][j];
+				}
+				
+				
+			}
+			return matrix;
+			
+			
+		}
+		
+	
+	
+	
+	
+
+	/**
+	 * multiplicates the vector with a vector (inner product). The argument is
+	 * not modified.
+	 * 
+	 * @param ds
+	 * @param d
+	 * @return
+	 */
+	// public static double multint(int[] ds, int[] dt) {
+	// if (ds.length != dt.length)
+	// throw new IllegalArgumentException("Vector dimensions must agree.");
+	// double s = 0;
+	// for (int i = 0; i < ds.length; i++) {
+	// s += ds[i] * dt[i];
+	// }
+	// return s;
+	// }
 
 	/**
 	 * transpose the matrix
@@ -1684,6 +2431,17 @@ public class Vectors {
 		}
 		return false;
 	}
+	
+	
+	public static boolean isDegenerate(RealMatrix pp) {
+		for (int i = 0; i < pp.getColumnDimension(); i++) {
+			if (isDegenerate(pp.getColumn(i))) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 	public static <T> boolean isPositive(T ds) {
 		if (ds instanceof double[][]) {
@@ -1837,6 +2595,19 @@ public class Vectors {
 		return false;
 	}
 
+	
+	public static double[][] positive(double[][] pp) {
+		double [][] matrix=new double[pp[0].length][pp[1].length];
+		for (int i = 0; i < pp[0].length; i++) {
+			for(int j=0; j<pp[1].length; j++){
+				if(pp[i][j]>0) matrix[i][j]=1.0;
+				else matrix[i][j]=0.0;
+				
+			}
+		}
+		return matrix;
+	}
+	
 	/**
 	 * checks equality
 	 * 
@@ -1915,9 +2686,12 @@ public class Vectors {
 	 * resize the array by copying it into a new array of size K. Changes the
 	 * pointer of the array.
 	 * 
-	 * @param x original array
-	 * @param newlen new length
-	 * @param fillval value to be filled into added elements
+	 * @param x
+	 *            original array
+	 * @param newlen
+	 *            new length
+	 * @param fillval
+	 *            value to be filled into added elements
 	 * @return resized array
 	 */
 	public static int[] resize(int[] x, int newlen, int fillval) {
@@ -1934,9 +2708,12 @@ public class Vectors {
 	 * resize the array by copying it into a new array of size K. Changes the
 	 * pointer of the array.
 	 * 
-	 * @param x original array
-	 * @param newlen new length
-	 * @param fillval value to be filled into added elements
+	 * @param x
+	 *            original array
+	 * @param newlen
+	 *            new length
+	 * @param fillval
+	 *            value to be filled into added elements
 	 * @return resized array
 	 */
 	public static double[] resize(double[] x, int newlen, double fillval) {
@@ -1952,10 +2729,13 @@ public class Vectors {
 	 * resize the array by copying it into a new array of size newlen and
 	 * filling it with null if grown. Changes the pointer of the array.
 	 * 
-	 * @param x original array
-	 * @param newlen new length
-	 * @param elementType type of one element, so zero-length arrays can be
-	 *        robustly handled. Can be null if x.length > 0 can be guaranteed.
+	 * @param x
+	 *            original array
+	 * @param newlen
+	 *            new length
+	 * @param elementType
+	 *            type of one element, so zero-length arrays can be robustly
+	 *            handled. Can be null if x.length > 0 can be guaranteed.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] resize(T[] x, int newlen, T elementType) {
