@@ -48,7 +48,6 @@ public class Vectors {
 	 * Set the format of the following double print calls to the column width
 	 * and number of digits. Note that this is a static setting, it can be
 	 * undone using unsetFormat.
-	 * 
 	 * @param colwidth
 	 * @param ndigits
 	 */
