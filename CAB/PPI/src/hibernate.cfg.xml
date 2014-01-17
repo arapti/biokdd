@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    <property name="current_session_context_class">thread</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">angelikirapti</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ppi</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.default_schema">ppi</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        
+        
+         <!-- JDBC connection pool (use the built-in) -->
+  <property name="connection.pool_size">1</property>
+ 
+  <property name="hbm2ddl.outputfilename">ddl.sql</property>
+  
+  <mapping class="com.vaannila.protein.Protein"/>
+  <mapping class="com.vaannila.protein.Interactions"/>
+  <mapping class="com.vaannila.protein.RandomInteract2000"/>
+  <mapping class="com.vaannila.protein.RandomInteract4000"/>
+  <mapping class="com.vaannila.protein.RandomInteract6000"/>
+  <mapping class="com.vaannila.protein.RandomInteract10000"/>
+    </session-factory>
+</hibernate-configuration>
